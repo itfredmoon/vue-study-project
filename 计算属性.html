@@ -1,0 +1,90 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta http-equiv="X-UA-Compatible" content="ie=edge">
+    <title>Document</title>
+</head>
+<!-- CDN方式引入vue.js -->
+<script src="https://cdn.jsdelivr.net/npm/vue/dist/vue.js">
+</script>
+<body>
+    <div id="app">
+        <span>{{message}}</span><br>
+        <!-- 这里不能少() -->
+        <span>{{resersedMsgMethod()}}</span>
+        <!-- 这里的括号，可有可无，alert本身是个空参函数 -->
+        <button @click='alert'>11</button><br>
+        <span>{{fullName}}</span>
+    </div>
+</body>
+</html>
+<!-- {{在这里使用的表达式，尽量精简}} -->
+<!-- 如果重复使用表达式，或者表达式过于复杂，可以使用计算属性 -->
+<script>
+    var vm = new Vue({
+        el:'#app',
+        data:{
+            message:'hello',
+            firstName:'Foo',
+            lastName:'Bar',
+            //如果计算属性有fullName，那么data中就不需要声明fullName了，否则会报错的
+            //而侦听属性则不同，被侦听的属性，都是需要在data中声明出来的。
+            // fullName:'Foo Bar'
+        },
+        //计算属性
+        computed: {
+            //在这里面写函数，通过计算data属性，返回计算结果
+            //这里我们声明了一个计算属性 resversedMsg
+            //我们提供的函数将用作属性 vm.resversedMsg 的 getter 函数：
+            //resversedMsg和message有依赖关系，随她变化而变化
+            resversedMsg:function (){
+                return this.message.split('').reverse().join('')
+            },
+            // fullName:function (){
+            //     return this.firstName + ' ' + this.lastName;
+            // },
+            //计算属性的setter
+            //默认计算属性只有getter，当然你需要的话，可以提供一个setter
+            fullName :{
+                get:function (){
+                    return this.firstName + ' ' + this.lastName;
+                },
+                set:function (val){
+                    var names = val.split(' ');
+                    this.firstName = names[0];
+                    this.lastName = names[names.length-1];
+                }
+            }
+            //现在再运行 vm.fullName = 'John Doe' 时，setter 会被调用，
+            //vm.firstName 和 vm.lastName 也会相应地被更新。
+        },
+        // 计算属性 VS 方法
+        //计算属性是有缓存的，当响应式依赖改变时才刷新计算属性。
+        //而方法是没有缓存的，每处调用都需要执行一遍方法体。
+        methods: {
+            resersedMsgMethod:function (){
+                return this.message.split('').reverse().join('')
+            },
+            alert:function (){
+                alert(1);
+            }
+        },
+        //计算属性 VS 侦听属性
+        //计算属性所依赖的响应式依赖改变时，自动改变计算属性。
+        //如果一个属性依赖其他100个属性，这时，你只需要写一个计算属性即可自动关联100个属性的依赖。
+        //如果你用侦听属性，那么你将手动侦听这100个属性，代码量上，孰优孰劣，很容易看出。
+        watch: {
+            // firstName:function (val){
+            //     this.fullName = val + ' ' + this.lastName;
+            // },
+            // lastName:function (val){
+            //     this.fullName = this.firstName + ' ' + val;
+            // },
+            //如果fullName依赖100个属性，还需重复上面操作49次。
+        },
+
+
+    })
+</script>

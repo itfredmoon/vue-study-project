@@ -1,0 +1,65 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta http-equiv="X-UA-Compatible" content="ie=edge">
+    <title>Document</title>
+</head>
+<!-- CDN方式引入vue.js -->
+<script src="https://cdn.jsdelivr.net/npm/vue/dist/vue.js">
+</script>
+<script src="https://cdn.jsdelivr.net/npm/axios@0.12.0/dist/axios.min.js"></script>
+<script src="https://cdn.jsdelivr.net/npm/lodash@4.13.1/lodash.min.js"></script>
+<body>
+    <div id="watch-example">
+        <p>
+            Ask a yes/no question:
+            <input v-model="question">
+        </p>
+        <p>{{answer}}</p>
+        <img :src="image" alt="图裂了，网速不太行8">
+    </div>
+</body>
+</html>
+<script>
+    var watchExampleVM = new Vue ({
+        el:"#watch-example",
+        data:{
+            image:'imgs/2-5df1b403f2654fa77559af1bf2332d7a.gif',
+            question:'',
+            answer:'I cannot give you an answer until you ask a question!'
+        },
+        watch:{
+            //侦听question，即input框内容变化触发函数
+            question:function(){
+                this.answer = 'Waiting for you to stop typing...'
+                this.debouncedGetAnswer()
+            }
+        },
+        created:function(){
+            this.debouncedGetAnswer=_.debounce(this.getAnswer,500)
+        },
+        methods:{
+            getAnswer:function(){
+                if(this.question.indexOf('?')===-1){
+                    this.answer='Questions usually contain a question mark. ;-)'
+                    return
+                }
+                //以问号结尾
+                this.answer='Thinking...'
+                var vm = this
+                vm.image='imgs/loading.gif'
+                //外国站点，读图速度十分慢...
+                axios.get('https://yesno.wtf/api')
+                    .then(function (response){
+                        vm.answer=_.capitalize(response.data.answer)
+                        vm.image=_.capitalize(response.data.image)
+                    })
+                    .catch(function (error){
+                        vm.answer='Error! Could not reach the API. '+error
+                    })
+            }
+        }
+    })
+</script>

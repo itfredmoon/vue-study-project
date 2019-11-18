@@ -1,0 +1,51 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta http-equiv="X-UA-Compatible" content="ie=edge">
+    <title>Document</title>
+</head>
+<!-- CDN方式引入vue.js -->
+<script src="https://cdn.jsdelivr.net/npm/vue/dist/vue.js">
+</script>
+<body>
+    <div id="app">
+        <!-- 
+            CSS 属性名可以用驼峰式 (camelCase) 
+            或短横线分隔 (kebab-case，记得用引号括起来) 来命名： 
+        -->
+        <div :style="{color:activeColor,'font-size':fontSize+'px'}">
+            'font-size'
+        </div>
+        <!-- 对象语法 -->
+        <div :style="{color:activeColor,fontSize:fontSize+'px'}">
+                 fontSize
+        </div>
+        <!-- 对象语法 -->
+        <div :style="styleObj">
+            :style="样式对象"
+        </div>
+        <!-- 数组语法 -->
+        <div :style="[styleObj,backgroundColrStyle]">
+            :style="[aaa,bbb]"数组语法
+        </div>
+    </div>
+</body>
+</html>
+<script>
+    var vm = new Vue({
+        el:'#app',
+        data:{
+            activeColor:'red',
+            fontSize:100,
+            styleObj:{
+                color:'blue',
+                fontSize:'100px'
+            },
+            backgroundColrStyle:{
+                backgroundColor:'yellow'
+            }
+        }
+    })
+</script>

@@ -1,0 +1,51 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta http-equiv="X-UA-Compatible" content="ie=edge">
+    <title>Document</title>
+</head>
+<!-- CDN方式引入vue.js -->
+<script src="https://cdn.jsdelivr.net/npm/vue/dist/vue.js">
+</script>
+<body>
+    <div id="app">
+        <!-- 对象写法1 -->
+        <div :class="classObj"></div>
+        <!-- 对象写法2 -->
+        <div :class="{active:isActive,'text-danger':isError}"></div>
+        <!-- 对象写法3 -->
+        <div :class="{
+            active:true,
+            'text-danger':true,
+            redBG:true
+        }"></div>
+        <!-- 数组写法 -->
+        <div :class="[activeClass,ErrorClass]"></div>
+        <!-- 数组写法2 -->
+        <!-- 如果你想动态切换class，你可以这么写 -->
+        <div :class="[isActive2 ? 'active' : '','text-danger']"></div>
+        <!-- 上面的数组写法2，可能三元表达式比较麻烦，可以优化一下 -->
+        <!-- 数组写法3 -->
+        <div :class="[{active:isActive},'text-danger']"></div>
+    </div> 
+</body>
+</html>
+<script>
+    var vm = new Vue ({
+        el:'#app',
+        data:{
+            classObj:{
+                // 键加不加引号都可以
+                active:true,
+                'text-danger':false
+            },
+            isActive:true,
+            isError:true,
+            activeClass:'active',
+            ErrorClass:'text-danger',
+            isActive2:1
+        }
+    })
+</script>

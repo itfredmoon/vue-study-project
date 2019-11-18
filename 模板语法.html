@@ -1,0 +1,61 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta http-equiv="X-UA-Compatible" content="ie=edge">
+    <title>Document</title>
+</head>
+<!-- CDN方式引入vue.js -->
+<script src="https://cdn.jsdelivr.net/npm/vue/dist/vue.js">
+</script>
+<body>
+    <div id="app">
+        <button :disabled="flag" @click='clear'>button</button>
+        <br>
+        <!-- 101 -->
+        <span>{{number+1}}</span>
+        <!-- 'no' -->
+        <span>{{ok?'yes':'no'}}</span>
+        <!-- 'list-001' -->
+        <span>{{'list-' + id}}</span>
+        <!-- v-bind:href="url" href为指令的参数 -->
+        <a :href="url">百度网址</a>
+        <!-- 指令：动态参数 -->
+        <!-- 参数会被浏览器转成小写的，除非data中有someattr否则不会生效 -->
+        <a :[someAttr]="url">:[guess]</a>
+        <!-- v-on:参数 -->
+        <!-- 参数不能加空格，会报错 -->
+        <!-- 加引号报错 -->
+        <button @[click]='alert'>click333
+
+        </button>
+    </div>
+    
+</body>
+</html>
+<script>
+ var vm = new Vue ({
+     el: "#app",
+     data:{
+         flag:false,
+         number:100,
+         ok:false,
+         id:001,
+         url:'http://www.baidu.com',
+         someattr:'href',
+         click: 'click'
+     },
+     methods: {
+         clear:function (){
+             this.flag = null;
+             this.number=null;
+             this.ok=null;
+             this.id=null;
+         },
+         alert:function (){
+             alert('click now ');
+         }
+     }
+ })
+</script>
